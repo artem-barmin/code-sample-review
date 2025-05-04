@@ -10,7 +10,9 @@
     :pass (do (print "\033[0;32m") (original-report m) (print "\033[0m")) ; Green for pass
     :fail (do (print "\033[0;31m") (original-report m) (print "\033[0m")) ; Red for fail
     :error (do (print "\033[0;31m") (original-report m) (print "\033[0m")) ; Red for error
-    :summary (do (print "\033[0;34m") (original-report m) (print "\033[0m")) ; Blue for summary
+    :summary (let [{:keys [test assertion fail error]} m]
+               (println (format "Ran %d tests containing %d assertions." test assertion))
+               (println (format "\033[0;31m%d failures\033[0m, \033[0;32m%d errors\033[0m." fail error))) ; Red failures, Green errors
     (original-report m))) ; Default for other event types
 
 (defn run-tests!
